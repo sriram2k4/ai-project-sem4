@@ -41,9 +41,9 @@ def POA(SearchAgents, Max_iterations, lowerbound, upperbound, dimension, fitness
             I = 1 + np.random.randint(2)
             
             if fit[i] > F_FOOD:
-                X_new = X[i, :] + np.random.rand(1) * (X_FOOD - (I * X[i, :]))  # Eq(4)
+                X_new = X[i, :] + np.random.rand(1) * (X_FOOD - (I * X[i, :]))  # Eq(4) # Uniform Distribution
             else:
-                X_new = X[i, :] + np.random.rand(1) * (X[i, :] - 1 * X_FOOD)
+                X_new = X[i, :] + np.random.rand(1) * (X[i, :] - 1 * X_FOOD) # Uniform Distribution
         
             # Ensure X_new is within the bounds
             X_new = np.maximum(X_new, lowerbound)
@@ -56,7 +56,7 @@ def POA(SearchAgents, Max_iterations, lowerbound, upperbound, dimension, fitness
                 fit[i] = f_new
                 
             # PHASE 2: Winging on the water surface (exploitation phase)
-            r = np.random.rand(1)
+            r = np.random.rand(1) # Uniform Distribution
             X_new = X[i, :] + (0.2 * (1 - t / Max_iterations) * (2 * r  - 1) * X[i, :])  # Eq(6)
 
             # Ensure X_new is within the bounds

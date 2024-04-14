@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import wilcoxon
+import statistics
 import POA
 import POAM
 import fun_info as f
@@ -10,8 +11,8 @@ p_value_matrix = np.zeros((30,2))
 
 def wilcoxonTest(Fun_name):
     SearchAgents = 50  # Number of Pelicans (population members)
-    Max_iterations = 1000  # Maximum number of iterations
-    num_runs = 10  # Number of runs for each algorithm
+    Max_iterations = 20000  # Maximum number of iterations
+    num_runs = 50  # Number of runs for each algorithm
 
     # Object function information
     fitness, lowerbound, upperbound, dimension = f.fun_info(Fun_name)
@@ -35,8 +36,8 @@ def wilcoxonTest(Fun_name):
         # p.plot_func(Max_iterations, POAM_curve, f"{Fun_name} Modified Run {i+1}")
 
     # Performing the Wilcoxon signed-rank test
-    print(f"Original Value {np.mean(original_best_scores)}")
-    print(f"Modified Value {np.mean(modified_best_scores)}")
+    # print(f"Original Value {np.mean(original_best_scores)}")
+    # print(f"Modified Value {np.mean(modified_best_scores)}")
 
 
     stat, p_value = wilcoxon(original_best_scores, modified_best_scores,zero_method='zsplit')
@@ -45,6 +46,10 @@ def wilcoxonTest(Fun_name):
     print("Wilcoxon signed-rank test results:")
     print(f"Function - {Fun_name}")
     print(f"Statistic: {stat}, P-value: {p_value}")
+    print(f"Mean of Original Algo: {statistics.stdev(original_best_scores)}")
+    print(f"Standard Deviation of Original Algo: {statistics.stdev(original_best_scores)}")
+    print(f"Mean of Modified Algo: {statistics.stdev(modified_best_scores)}")
+    print(f"Standard Deviation of Modified Algo: {statistics.stdev(modified_best_scores)}")
 
     if p_value < 0.05:
         print("There is a significant difference between the original and modified algorithms.")
@@ -53,7 +58,7 @@ def wilcoxonTest(Fun_name):
     return (original_best_scores, modified_best_scores, p_value)
 
 def main():
-    for i in range(1, 30):  # Loop over each function from F1 to F25
+    for i in range(2, 5):  # Loop over each function from F1 to F25
         if i in {8, 9, 14, 16, 29}:
             continue
         Fun_name = f'F{i}'  # Name of the test function
